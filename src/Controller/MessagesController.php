@@ -135,7 +135,7 @@ class MessagesController extends AppController
 			curl_setopt($ch, CURLOPT_URL, $url);
 			curl_setopt($ch, CURLOPT_POST, true);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			curl_setopt($ch, CURLOPT_USERPWD, "mtest@texttochange.com:mtest987654321" );
+			curl_setopt($ch, CURLOPT_USERPWD, "username:password" );
 			curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
 			curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post_data));
 			$result = curl_exec($ch);
