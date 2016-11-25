@@ -15,6 +15,7 @@
 namespace App\Controller;
 
 use Cake\Controller\Controller;
+//use Cake\Controller\Component\AuthComponent;
 use Cake\Event\Event;
 
 /**
@@ -43,7 +44,29 @@ class AppController extends Controller
 
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');
+        $this->loadComponent('Auth', [
+            'loginRedirect' => [
+                'controller' => 'Participants',
+                'action' => 'index'
+            ],
+            'logoutRedirect' => [
+                'controller' => 'Users',
+                'action' => 'login'
+            ],
+            'authenticate' => [
+                'Form' => [
+                    'fields' => ['username' => 'email']
+                ]
+            ],
+        ]);
     }
+
+
+    public function beforeFilter(Event $event)
+    {
+        $this->Auth->allow(['login']);
+    }
+
 
     /**
      * Before render callback.
