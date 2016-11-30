@@ -5,6 +5,7 @@
         <li><?= $this->Form->postLink(__('Delete Message'), ['action' => 'delete', $message->id], ['confirm' => __('Are you sure you want to delete # {0}?', $message->id)]) ?> </li>
         <li><?= $this->Html->link(__('List Messages'), ['action' => 'index']) ?> </li>
         <li><?= $this->Html->link(__('New Message'), ['action' => 'add']) ?> </li>
+        <li><?= $this->Html->link(__('Home'), ['controller' => 'TurboHome', 'action' => 'index']) ?></li>
     </ul>
 </nav>
 <div class="messages view large-9 medium-8 columns content">

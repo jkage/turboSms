@@ -2,6 +2,7 @@
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
         <li><?= $this->Html->link(__('List Messages'), ['action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('Home'), ['controller' => 'TurboHome', 'action' => 'index']) ?></li>
     </ul>
 </nav>
 <div class="messages form large-9 medium-8 columns content">

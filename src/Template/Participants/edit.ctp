@@ -8,6 +8,7 @@
             )
         ?></li>
         <li><?= $this->Html->link(__('List Participants'), ['action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('Home'), ['controller' => 'TurboHome', 'action' => 'index']) ?></li>
     </ul>
 </nav>
 <div class="participants form large-9 medium-8 columns content">

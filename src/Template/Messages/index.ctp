@@ -3,6 +3,7 @@
         <li class="heading"><?= __('Actions') ?></li>
         <li><?= $this->Html->link(__('New Message'), ['action' => 'add']) ?></li>
 		<li><?= $this->Html->link(__('Send Message'), ['action' => 'send']) ?></li>
+        <li><?= $this->Html->link(__('Home'), ['controller' => 'TurboHome', 'action' => 'index']) ?></li>
     </ul>
 </nav>
 <div class="messages index large-9 medium-8 columns content">

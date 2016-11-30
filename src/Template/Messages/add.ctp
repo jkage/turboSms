@@ -2,6 +2,7 @@
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
         <li><?= $this->Html->link(__('List Messages'), ['action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('Home'), ['controller' => 'TurboHome', 'action' => 'index']) ?></li>
     </ul>
 </nav>
 <div class="messages form large-9 medium-8 columns content">
@@ -9,8 +10,8 @@
     <fieldset>
         <legend><?= __('Add Message') ?></legend>
         <?php
-            echo $this->Form->input('phone');
-            echo $this->Form->input('content');
+            echo $this->Form->input('phone', array('label' => 'Phone'));
+            echo $this->Form->input('content', array('label' => 'Content'));
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

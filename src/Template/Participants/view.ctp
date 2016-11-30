@@ -2,9 +2,10 @@
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
         <li><?= $this->Html->link(__('Edit Participant'), ['action' => 'edit', $participant->id]) ?> </li>
-        <li><?= $this->Form->postLink(__('Delete Participant'), ['action' => 'delete', $participant->id], ['confirm' => __('Are you sure you want to delete # {0}?', $participant->id)]) ?> </li>
-        <li><?= $this->Html->link(__('List Participants'), ['action' => 'index']) ?> </li>
+        <li><?= $this->Form->postLink(__('Delete Participant'), ['action' => 'delete', $participant->id], ['confirm' => __('Are you sure you want to delete # {0}?', $participant->id)]) ?> </li>        
         <li><?= $this->Html->link(__('New Participant'), ['action' => 'add']) ?> </li>
+        <li><?= $this->Html->link(__('List Participants'), ['action' => 'index']) ?> </li>
+        <li><?= $this->Html->link(__('Home'), ['controller' => 'TurboHome', 'action' => 'index']) ?></li>
     </ul>
 </nav>
 <div class="participants view large-9 medium-8 columns content">
