@@ -11,7 +11,7 @@
         <legend><?= __('Send Message') ?></legend>
         <?php
             echo $this->Form->input('phone');
-            echo $this->Form->input('content');
+            echo $this->Form->input('content', array('id' => 'sendMessage'));
 			echo $this->Form->input('schedule');
         ?>
     </fieldset>

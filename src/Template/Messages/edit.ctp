@@ -17,7 +17,7 @@
         <legend><?= __('Edit Message') ?></legend>
         <?php
             echo $this->Form->input('phone');
-            echo $this->Form->input('content');
+            echo $this->Form->input('content', array('label' => 'Content', 'id' => 'editMessage'));
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

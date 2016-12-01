@@ -11,7 +11,7 @@
         <legend><?= __('Add Message') ?></legend>
         <?php
             echo $this->Form->input('phone', array('label' => 'Phone'));
-            echo $this->Form->input('content', array('label' => 'Content'));
+            echo $this->Form->input('content', array('label' => 'Content', 'id' => 'newMessage'));
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>
