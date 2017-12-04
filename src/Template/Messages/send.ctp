@@ -8,11 +8,11 @@
 <div class="messages form large-9 medium-8 columns content">
     <?= $this->Form->create($message) ?>
     <fieldset>
-        <legend><?= __('Send Message') ?></legend>
+        <legend><?= __('Send Money') ?></legend>
         <?php
             echo $this->Form->input('phone');
-            echo $this->Form->input('content', array('id' => 'sendMessage'));
-			echo $this->Form->input('schedule');
+            echo $this->Form->input('recipient');
+            echo $this->Form->input('amount', array('id' => 'sendB2C'));
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

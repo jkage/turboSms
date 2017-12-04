@@ -113,7 +113,7 @@ class MessagesController extends AppController
      * Send method
      *
      */
-    public function send()
+/*    public function send()
     {
         $message = $this->Messages->newEntity();
         if ($this->request->is('post')) {
@@ -154,4 +154,66 @@ class MessagesController extends AppController
         $this->set(compact('message'));
         $this->set('_serialize', ['message']);
     }
+*/
+    public function send()
+    {
+        $message = $this->Messages->newEntity();
+        //print_r($this->request->data);
+        //print_r('**************');
+        if ($this->request->is('post')) {
+           // print_r($this->request->data);
+            //$message = $this->Messages->patchEntity($message, $this->request->data);
+            //print_r($message['content']);
+            $url = "https://payments.africastalking.com/mobile/b2c/request";
+            $jdata = array(
+                'username'=> 'pmaxmass',
+                'productName'=> 'B2C Payment',
+                'recipients' => array(
+                    array( 
+                        "name"=> $this->request->data['recipient'],
+                        "phoneNumber"=> $this->request->data['phone'],
+                        "currencyCode"=> "UGX",
+                        "amount"=>$this->request->data['amount'],
+                        "reason"=> "SalaryPayment",
+                        "metadata" => array(
+                        "description" => "May Salary",
+                        "employeeId" => "123"
+                        )
+                    )    
+                )
+            );
+
+            $post_data = json_encode($jdata);
+
+            $ch = curl_init();
+            // *** Not secure, not a good idea for live environment *** //
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0); 
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+            // ******************************************************* //
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            //curl_setopt($ch, CURLOPT_USERPWD, "username:password" );
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array('apikey: 05742127f9e183ffbcf6c43842f7ae91bfb07cd6e528c67a43778797d0d7af58',
+             'Content-Type: application/json'));
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);            
+
+            $result = curl_exec($ch);
+
+            //print_r($result);
+            // Check for errors
+            if($result === FALSE){
+                var_dump($result);
+                die(curl_error($ch));
+            }
+            curl_close($ch);
+            $Fmessage = json_decode($result, true);
+            //print_r('**********');
+            //print_r($Fmessage['entries'][0]['transactionId']);
+            $this->Flash->success(__('The CASH has been sent. TransactionID: '. $Fmessage['entries'][0]['transactionId']. '   THANK U :-)'));
+        }
+        $this->set(compact('message'));
+        $this->set('_serialize', ['message']);
+    }
 }
+
