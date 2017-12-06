@@ -2,6 +2,7 @@
     <ul class="side-nav">
         <li class="heading"><?= __('') ?></li>
         <li><?= $this->Html->link(__('Messages'), ['controller' => 'Messages','action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('Payments'), ['controller' => 'Payments','action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('Participants'), ['controller' => 'Participants','action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('Users'), ['controller' => 'Users', 'action' => 'index']) ?></li>
     </ul>
