@@ -113,7 +113,7 @@ class MessagesController extends AppController
      * Send method
      *
      */
-/*    public function send()
+   public function send()
     {
         $message = $this->Messages->newEntity();
         if ($this->request->is('post')) {
@@ -154,7 +154,7 @@ class MessagesController extends AppController
         $this->set(compact('message'));
         $this->set('_serialize', ['message']);
     }
-*/
+/*
     public function send()
     {
         $message = $this->Messages->newEntity();
@@ -214,6 +214,6 @@ class MessagesController extends AppController
         }
         $this->set(compact('message'));
         $this->set('_serialize', ['message']);
-    }
+    }*/
 }
 

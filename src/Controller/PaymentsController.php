@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\Event\Event;
 
 /**
  * Payments Controller
@@ -109,13 +110,9 @@ class PaymentsController extends AppController
 
     public function send()
     {
-        $payment = $this->Payments->newEntity();
-        //print_r($this->request->data);
-        //print_r('**************');
+        $payment = $this->Payments->newEntity();        
         if ($this->request->is('post')) {
-           // print_r($this->request->data);
-            //$message = $this->Messages->patchEntity($message, $this->request->data);
-            //print_r($message['content']);
+            $payment = $this->Payments->patchEntity($payment, $this->request->data);
             $url = "https://payments.sandbox.africastalking.com/mobile/b2c/request";
             $jdata = array(
                 'username'=> 'sandbox',
@@ -136,7 +133,7 @@ class PaymentsController extends AppController
             );
 
             $post_data = json_encode($jdata);
-            
+
             $ch = curl_init();
             // *** Not secure, not a good idea for live environment *** //
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0); 
@@ -151,8 +148,6 @@ class PaymentsController extends AppController
             curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);            
 
             $result = curl_exec($ch);
-
-            print_r($result);
             // Check for errors
             if($result === FALSE){
                 var_dump($result);
@@ -160,9 +155,13 @@ class PaymentsController extends AppController
             }
             curl_close($ch);
             $Fmessage = json_decode($result, true);
-            //print_r('**********');
-            //print_r($Fmessage['entries'][0]['transactionId']);
-            $this->Flash->success(__('The CASH has been sent. TransactionID: '. $Fmessage['entries'][0]['transactionId']. '   THANK U :-)'));
+            if ($Fmessage['entries'][0]['status'] == 'Queued'){
+                $this->Payments->save($payment);                
+                $this->Flash->success(__('The CASH has been sent. TransactionID: '. $Fmessage['entries'][0]['transactionId']. '   THANK U :-)'));
+                return $this->redirect(['action' => 'index']);
+            }else {
+                $this->Flash->error(__('The CASH not sent. Reason: '. $Fmessage['entries'][0]['errorMessage']));
+            }
         }
         $this->set(compact('payment'));
         $this->set('_serialize', ['payment']);
