@@ -4,9 +4,9 @@ namespace App\Controller;
 use App\Controller\AppController;
 
 /**
- * Messages Controller
+ * Payments Controller
  *
- * @property \App\Model\Table\MessagesTable $Messages
+ * @property \App\Model\Table\PaymentsTable $Payments
  */
 class PaymentsController extends AppController
 {
@@ -18,156 +18,108 @@ class PaymentsController extends AppController
      */
     public function index()
     {
-        $messages = $this->paginate($this->Messages);
+        $payments = $this->paginate($this->Payments);
 
-        $this->set(compact('messages'));
-        $this->set('_serialize', ['messages']);
+        $this->set(compact('payments'));
+        $this->set('_serialize', ['payments']);
     }
 
     /**
      * View method
      *
-     * @param string|null $id Message id.
+     * @param string|null $id Payment id.
      * @return \Cake\Network\Response|null
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function view($id = null)
     {
-        $message = $this->Messages->get($id, [
+        $payment = $this->Payments->get($id, [
             'contain' => []
         ]);
 
-        $this->set('message', $message);
-        $this->set('_serialize', ['message']);
+        $this->set('payment', $payment);
+        $this->set('_serialize', ['payment']);
     }
 
     /**
      * Add method
      *
-     * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Network\Response|null Redirects on successful add, renders view otherwise.
      */
     public function add()
     {
-        $message = $this->Messages->newEntity();
+        $payment = $this->Payments->newEntity();
         if ($this->request->is('post')) {
-            $message = $this->Messages->patchEntity($message, $this->request->data);
-            if ($this->Messages->save($message)) {
-                $this->Flash->success(__('The message has been saved.'));
+            $payment = $this->Payments->patchEntity($payment, $this->request->data);
+            if ($this->Payments->save($payment)) {
+                $this->Flash->success(__('The payment has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
-            } else {
-                $this->Flash->error(__('The message could not be saved. Please, try again.'));
             }
+            $this->Flash->error(__('The payment could not be saved. Please, try again.'));
         }
-        $this->set(compact('message'));
-        $this->set('_serialize', ['message']);
+        $this->set(compact('payment'));
+        $this->set('_serialize', ['payment']);
     }
 
     /**
      * Edit method
      *
-     * @param string|null $id Message id.
-     * @return \Cake\Network\Response|void Redirects on successful edit, renders view otherwise.
+     * @param string|null $id Payment id.
+     * @return \Cake\Network\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
     public function edit($id = null)
     {
-        $message = $this->Messages->get($id, [
+        $payment = $this->Payments->get($id, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $message = $this->Messages->patchEntity($message, $this->request->data);
-            if ($this->Messages->save($message)) {
-                $this->Flash->success(__('The message has been saved.'));
+            $payment = $this->Payments->patchEntity($payment, $this->request->data);
+            if ($this->Payments->save($payment)) {
+                $this->Flash->success(__('The payment has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
-            } else {
-                $this->Flash->error(__('The message could not be saved. Please, try again.'));
             }
+            $this->Flash->error(__('The payment could not be saved. Please, try again.'));
         }
-        $this->set(compact('message'));
-        $this->set('_serialize', ['message']);
+        $this->set(compact('payment'));
+        $this->set('_serialize', ['payment']);
     }
 
     /**
      * Delete method
      *
-     * @param string|null $id Message id.
+     * @param string|null $id Payment id.
      * @return \Cake\Network\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $message = $this->Messages->get($id);
-        if ($this->Messages->delete($message)) {
-            $this->Flash->success(__('The message has been deleted.'));
+        $payment = $this->Payments->get($id);
+        if ($this->Payments->delete($payment)) {
+            $this->Flash->success(__('The payment has been deleted.'));
         } else {
-            $this->Flash->error(__('The message could not be deleted. Please, try again.'));
+            $this->Flash->error(__('The payment could not be deleted. Please, try again.'));
         }
 
         return $this->redirect(['action' => 'index']);
     }
-	
-	/**
-     * Send method
-     *
-     */
-/*    public function send()
-    {
-        $message = $this->Messages->newEntity();
-        if ($this->request->is('post')) {
-			$message = $this->Messages->patchEntity($message, $this->request->data);
-			//print_r($message['content']);
-			$url = "https://vusion.texttochange.org/story1/programUnattachedMessages/add.json";
-			$post_data = array(
-				'send-to-type' => 'phone',
-				'content' => $message['content'],
-				'send-to-phone[0]' => $message['phone'],
-				'type-schedule' => $message['schedule'],
-			);
-		
-			$ch = curl_init();
-			// *** Not secure, not a good idea for live environment *** //
-			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0); 
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-			// ******************************************************* //
-			curl_setopt($ch, CURLOPT_URL, $url);
-			curl_setopt($ch, CURLOPT_POST, true);
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			curl_setopt($ch, CURLOPT_USERPWD, "username:password" );
-			curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
-			curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post_data));
-			$result = curl_exec($ch);
-			
-			// Check for errors
-			if($result === FALSE){
-				var_dump($result);
-				die(curl_error($ch));
-			}
-			curl_close($ch);
-			
-			
-			
-			$this->Flash->success(__('The SMS has been sent.'));
-        }
-        $this->set(compact('message'));
-        $this->set('_serialize', ['message']);
-    }
-*/
+
     public function send()
     {
-        $message = $this->Messages->newEntity();
+        $payment = $this->Payments->newEntity();
         //print_r($this->request->data);
         //print_r('**************');
         if ($this->request->is('post')) {
            // print_r($this->request->data);
             //$message = $this->Messages->patchEntity($message, $this->request->data);
             //print_r($message['content']);
-            $url = "https://payments.africastalking.com/mobile/b2c/request";
+            $url = "https://payments.sandbox.africastalking.com/mobile/b2c/request";
             $jdata = array(
-                'username'=> 'pmaxmass',
-                'productName'=> 'B2C Payment',
+                'username'=> 'sandbox',
+                'productName'=> 'payroll',
                 'recipients' => array(
                     array( 
                         "name"=> $this->request->data['recipient'],
@@ -184,7 +136,7 @@ class PaymentsController extends AppController
             );
 
             $post_data = json_encode($jdata);
-
+            
             $ch = curl_init();
             // *** Not secure, not a good idea for live environment *** //
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0); 
@@ -194,13 +146,13 @@ class PaymentsController extends AppController
             curl_setopt($ch, CURLOPT_POST, true);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             //curl_setopt($ch, CURLOPT_USERPWD, "username:password" );
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array('apikey: 05742127f9e183ffbcf6c43842f7ae91bfb07cd6e528c67a43778797d0d7af58',
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array('apikey: 38a5d3364a2970ca7dc474ae85e551c6baf86c24b9d17e08b3944b946dc9101e',
              'Content-Type: application/json'));
             curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);            
 
             $result = curl_exec($ch);
 
-            //print_r($result);
+            print_r($result);
             // Check for errors
             if($result === FALSE){
                 var_dump($result);
@@ -212,8 +164,7 @@ class PaymentsController extends AppController
             //print_r($Fmessage['entries'][0]['transactionId']);
             $this->Flash->success(__('The CASH has been sent. TransactionID: '. $Fmessage['entries'][0]['transactionId']. '   THANK U :-)'));
         }
-        $this->set(compact('message'));
-        $this->set('_serialize', ['message']);
+        $this->set(compact('payment'));
+        $this->set('_serialize', ['payment']);
     }
 }
-

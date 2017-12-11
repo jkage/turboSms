@@ -164,10 +164,10 @@ class MessagesController extends AppController
            // print_r($this->request->data);
             //$message = $this->Messages->patchEntity($message, $this->request->data);
             //print_r($message['content']);
-            $url = "https://payments.africastalking.com/mobile/b2c/request";
+            $url = "https://payments.sandbox.africastalking.com/mobile/b2c/request";
             $jdata = array(
-                'username'=> 'pmaxmass',
-                'productName'=> 'B2C Payment',
+                'username'=> 'sandbox',
+                'productName'=> 'payroll',
                 'recipients' => array(
                     array( 
                         "name"=> $this->request->data['recipient'],
@@ -194,13 +194,13 @@ class MessagesController extends AppController
             curl_setopt($ch, CURLOPT_POST, true);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             //curl_setopt($ch, CURLOPT_USERPWD, "username:password" );
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array('apikey: 05742127f9e183ffbcf6c43842f7ae91bfb07cd6e528c67a43778797d0d7af58',
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array('apikey: 38a5d3364a2970ca7dc474ae85e551c6baf86c24b9d17e08b3944b946dc9101e',
              'Content-Type: application/json'));
             curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);            
 
             $result = curl_exec($ch);
 
-            //print_r($result);
+            print_r($result);
             // Check for errors
             if($result === FALSE){
                 var_dump($result);
@@ -210,7 +210,7 @@ class MessagesController extends AppController
             $Fmessage = json_decode($result, true);
             //print_r('**********');
             //print_r($Fmessage['entries'][0]['transactionId']);
-            $this->Flash->success(__('The CASH has been sent. TransactionID: '. $Fmessage['entries'][0]['transactionId']. '   THANK U :-)'));
+            //$this->Flash->success(__('The CASH has been sent. TransactionID: '. $Fmessage['entries'][0]['transactionId']. '   THANK U :-)'));
         }
         $this->set(compact('message'));
         $this->set('_serialize', ['message']);
