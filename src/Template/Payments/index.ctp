@@ -2,6 +2,7 @@
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
         <li><?= $this->Html->link(__('New payment'), ['action' => 'send']) ?></li>
+        <li><?= $this->Html->link(__('List payment'), ['action' => 'filesend']) ?></li>
         <li><?= $this->Html->link(__('Home'), ['controller' => 'TurboHome', 'action' => 'index']) ?></li>
     </ul>
 </nav>

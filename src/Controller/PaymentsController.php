@@ -277,4 +277,87 @@ class PaymentsController extends AppController
         $this->set(compact('payment'));
         $this->set('_serialize', ['payment']);
     }
+
+    public function filesend()
+    {
+        require_once "AfricasTalkingGateway.php";
+        
+        
+        $payment = $this->Payments->newEntity();
+        if($this->request->is('post')){
+            $username = "sandbox";
+            $apiKey   = "38a5d3364a2970ca7dc474ae85e551c6baf86c24b9d17e08b3944b946dc9101e";
+            $gateway = new AfricasTalkingGateway($username, $apiKey, "sandbox");
+            $productName  = "payroll";
+            $currencyCode = "UGX";
+            
+            print_r($_FILES);
+            if($_FILES['csv']){
+                $filename = explode('.', $_FILES['csv']['name']);
+                
+                #debug($filename);
+                if($filename[1]=='csv'){                    
+                    $handle = fopen($_FILES['csv']['tmp_name'], "r");
+                    print_r($handle);
+                    print_r('##########');
+                    while ($data = fgetcsv($handle)){
+                        $item1 = $data[0];                        
+                        $data = array(
+                            'fieldName' => $item1
+                            );
+                        print_r('**********');
+                        print_r($data);
+                        //  $item2 = $data[1];
+                        //  $item3 = $data[2];
+                        //  $item4 = $data[3];
+                        $payment = $this->Payments->newEntity($data);
+                        $this->Payments->save($payment);
+                        #$payment = $this->Payments->patchEntity($payment, $this->request->data);
+                        #$Applicant = $this->Applicants->newEntity($data);
+                        #$this->Applicants->save($Applicant);
+                    }
+                    fclose($handle);
+                }
+            }
+        }
+        //$this->render(FALSE);
+        
+        
+        
+        
+        /*
+        $recipient1   = array("phoneNumber" => $this->request->data['phone'],
+            "currencyCode" => $currencyCode,
+            "amount"       => $this->request->data['amount'],
+            "metadata"     => array("name"   => $this->request->data['recipient'],
+                "reason" => "May Salary")
+            );
+        
+        // Put the recipients into an array
+        //$recipients  = array($recipient1, $recipient2);
+        $recipients  = array($recipient1);
+        
+        try {
+            $responses = $gateway->mobilePaymentB2CRequest($productName, $recipients);
+            
+            foreach($responses as $response) {
+                //$Fmessage = json_decode($result, true);
+                if ($response->status == 'Queued'){
+                    $this->Payments->save($payment);                
+                    $this->Flash->success(__('The CASH has been sent. TransactionID: '.$response->transactionId. '   THANK U :-)'));
+                    return $this->redirect(['action' => 'index']);
+                }else {
+                    $this->Flash->error(__('The CASH not sent. Reason: '. $response->errorMessage. ':-('));
+                }
+            }
+            
+        }
+        catch(AfricasTalkingGatewayException $e){
+            $this->Flash->error(__('The CASH not sent. Reason: '. $e->getMessage()));
+            //echo "Received error response: ".$e->getMessage();
+        }
+        */
+        $this->set(compact('payment'));
+        $this->set('_serialize', ['payment']);
+    }
 }
